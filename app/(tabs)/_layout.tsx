@@ -1,10 +1,10 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Platform } from 'react-native';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { HapticTab } from '@/src/shared/components/HapticTab';
+import { IconSymbol } from '@/src/shared/components/IconSymbol';
+import { useColorScheme } from '@/src/shared/hooks/use-color-scheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -12,9 +12,13 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: '#000000',
+        tabBarInactiveTintColor: 'gray',
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          backgroundColor: 'white',
+        }
       }}>
       <Tabs.Screen
         name="index"
@@ -24,10 +28,26 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="my-trips"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'My Trips',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="figure.walk" color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="new-trip"
+        options={{
+          title: 'New Trip',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="plus" color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
         }}
       />
     </Tabs>
