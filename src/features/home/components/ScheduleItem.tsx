@@ -40,8 +40,8 @@ const ScheduleItem = ({ time, label, isSelected, onPress }: ScheduleItemProps) =
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 12,
-        paddingHorizontal: 16,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
         borderRadius: 25,
         alignItems: 'center',
         justifyContent: 'center',
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     timeText: {
         fontSize: 12,
-        marginBottom: 4,
+        marginBottom: 1,
     },
     labelText: {
         fontSize: 16,
@@ -73,4 +73,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ScheduleItem;
+export default React.memo(ScheduleItem);

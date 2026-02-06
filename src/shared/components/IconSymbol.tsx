@@ -15,6 +15,8 @@ const MAPPING = {
     'figure.walk': 'directions-walk',
     'plus': 'add',
     'person.fill': 'person',
+    'star.fill': 'star',
+    'mappin.and.ellipse': 'location-on',
 } as Partial<
     Record<
         import('expo-symbols').SymbolViewProps['name'],

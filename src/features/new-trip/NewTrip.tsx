@@ -1,20 +1,20 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CommonHeader from '../../../shared/components/CommonHeader';
+import CommonHeader from '../../shared/components/CommonHeader';
 
-const MyTrips = () => {
+const NewTrip = () => {
     return (
         <SafeAreaView style={styles.container}>
             <CommonHeader />
             <View style={styles.content}>
-                <Text>My Trips Screen</Text>
+                <Text>New Trip Screen</Text>
             </View>
         </SafeAreaView>
     );
 };
 
-export default MyTrips;
+export default NewTrip;
 
 const styles = StyleSheet.create({
     container: {
