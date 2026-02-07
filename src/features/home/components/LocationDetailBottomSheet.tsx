@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, FlatList, Dimensions } from 'react-n
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconSymbol } from '@/src/shared/components/IconSymbol';
 import Tag from '@/src/shared/components/Tag';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming, withSequence } from 'react-native-reanimated';
 import ReviewCard from './ReviewCard';
 
 interface LocationDetailBottomSheetProps {
@@ -61,7 +61,9 @@ const REVIEWS_DATA = [
 const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetProps) => {
     const insets = useSafeAreaInsets();
     const [activeTab, setActiveTab] = useState<'overview' | 'videos'>('overview');
+    const [isLiked, setIsLiked] = useState(false);
     const tabAnimation = useSharedValue(0);
+    const likeScale = useSharedValue(1);
 
     const handleTabPress = (tab: 'overview' | 'videos') => {
         setActiveTab(tab);
@@ -71,6 +73,20 @@ const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetP
     const animatedTabStyle = useAnimatedStyle(() => {
         return {
             transform: [{ translateX: tabAnimation.value * (TOGGLE_WIDTH / 2) }],
+        };
+    });
+
+    const handleLike = () => {
+        setIsLiked(!isLiked);
+        likeScale.value = withSequence(
+            withTiming(1.3, { duration: 100 }),
+            withTiming(1, { duration: 100 })
+        );
+    };
+
+    const animatedLikeStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: likeScale.value }],
         };
     });
 
@@ -101,8 +117,14 @@ const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetP
             <View style={styles.sheetHeader}>
                 <Text style={styles.sheetTitle}>{item.title}</Text>
                 <View style={styles.sheetHeaderActions}>
-                    <Pressable style={styles.iconButton}>
-                        <IconSymbol name="heart" size={20} color="#ADB5BD" />
+                    <Pressable style={styles.iconButton} onPress={handleLike}>
+                        <Animated.View style={animatedLikeStyle}>
+                            <IconSymbol
+                                name={isLiked ? "heart.fill" : "heart"}
+                                size={20}
+                                color={isLiked ? "#FF3B30" : "#ADB5BD"}
+                            />
+                        </Animated.View>
                     </Pressable>
                     <Pressable
                         style={styles.iconButton}

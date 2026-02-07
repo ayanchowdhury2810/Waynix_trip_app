@@ -71,10 +71,10 @@ const BottomSheet = React.forwardRef<BottomSheetRef, BottomSheetProps>(
             .onEnd(() => {
                 // If dragged down more than 100 units from current active position, close it
                 if (translateY.value > currentDestination.value + 100) {
-                    scrollTo(0);
+                    runOnJS(scrollTo)(0);
                 } else {
                     // Snap back to destination
-                    scrollTo(currentDestination.value);
+                    runOnJS(scrollTo)(currentDestination.value);
                 }
             });
 

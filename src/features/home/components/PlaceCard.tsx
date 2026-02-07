@@ -28,7 +28,7 @@ const PlaceCard = ({
         <Pressable
             style={({ pressed }) => [
                 styles.card,
-                pressed && { opacity: 0.95, transform: [{ scale: 0.995 }] }
+                pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }
             ]}
             onPress={onPress}
         >

@@ -11,7 +11,7 @@ const AskAnythingOverlay = () => {
 
     return (
         <View style={styles.absoluteContainer}>
-            <BlurView intensity={60} tint="light" style={[styles.blurContainer, { paddingBottom: insets.bottom }]}>
+            <BlurView intensity={500} tint="light" style={[styles.blurContainer, { paddingBottom: insets.bottom }]}>
                 <Pressable
                     style={({ pressed }) => [
                         styles.pill,
