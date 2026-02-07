@@ -17,6 +17,12 @@ const MAPPING = {
     'person.fill': 'person',
     'star.fill': 'star',
     'mappin.and.ellipse': 'location-on',
+    'heart': 'favorite-border',
+    'heart.fill': 'favorite',
+    'xmark': 'close',
+    'clock.fill': 'access-time',
+    'globe': 'public',
+    'chevron.down': 'expand-more',
 } as Partial<
     Record<
         import('expo-symbols').SymbolViewProps['name'],

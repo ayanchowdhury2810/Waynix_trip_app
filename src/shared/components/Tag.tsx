@@ -3,12 +3,21 @@ import React from 'react';
 
 interface TagProps {
     label: string;
+    variant?: 'primary' | 'secondary';
 }
 
-const Tag = ({ label }: TagProps) => {
+const Tag = ({ label, variant = 'primary' }: TagProps) => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>{label}</Text>
+        <View style={[
+            styles.container,
+            variant === 'secondary' && styles.secondaryContainer
+        ]}>
+            <Text style={[
+                styles.text,
+                variant === 'secondary' && styles.secondaryText
+            ]}>
+                {label}
+            </Text>
         </View>
     );
 };
@@ -18,16 +27,22 @@ export default Tag;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#FFE5E5',
-        paddingHorizontal: 5,
-        paddingVertical: 2,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
         borderRadius: 20,
         marginRight: 8,
         borderWidth: 1,
         borderColor: '#FFb6c1',
     },
+    secondaryContainer: {
+        backgroundColor: 'transparent',
+    },
     text: {
         color: '#D64045',
         fontSize: 12,
-        lineHeight: 15,
+        fontWeight: '600',
+    },
+    secondaryText: {
+        fontWeight: '400',
     },
 });

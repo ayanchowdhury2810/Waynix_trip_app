@@ -7,6 +7,8 @@ import RecommendationCard from './components/RecommendationCard';
 import PlaceCard from './components/PlaceCard';
 import AskAnythingOverlay from './components/AskAnythingOverlay';
 import BottomSheet, { BottomSheetRef } from '../../shared/components/BottomSheet';
+import { IconSymbol } from '../../shared/components/IconSymbol';
+import LocationDetailBottomSheet from './components/LocationDetailBottomSheet';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -63,7 +65,7 @@ const HomeScreen = () => {
 
     const handlePress = useCallback((item: any) => {
         setSelectedItem(item);
-        bottomSheetRef.current?.scrollTo(-SCREEN_HEIGHT / 2);
+        bottomSheetRef.current?.scrollTo(-SCREEN_HEIGHT * 0.8);
     }, []);
 
     const buildScreenData = () => {
@@ -165,40 +167,16 @@ const HomeScreen = () => {
 
             <AskAnythingOverlay />
 
-            <BottomSheet ref={bottomSheetRef}>
-                <View style={styles.bottomSheetContent}>
-                    {selectedItem && (
-                        <>
-                            <Text style={styles.sheetTitle}>{selectedItem.title}</Text>
-                            <Text style={styles.sheetDescription}>{selectedItem.description}</Text>
-
-                            <View style={styles.sheetInfoRow}>
-                                <View style={styles.sheetInfoItem}>
-                                    <Text style={styles.sheetInfoLabel}>Price</Text>
-                                    <Text style={styles.sheetInfoValue}>{selectedItem.price}</Text>
-                                </View>
-                                <View style={styles.sheetInfoItem}>
-                                    <Text style={styles.sheetInfoLabel}>Distance</Text>
-                                    <Text style={styles.sheetInfoValue}>{selectedItem.distance}</Text>
-                                </View>
-                                <View style={styles.sheetInfoItem}>
-                                    <Text style={styles.sheetInfoLabel}>Rating</Text>
-                                    <Text style={styles.sheetInfoValue}>⭐ {selectedItem.rating}</Text>
-                                </View>
-                            </View>
-
-                            <Pressable
-                                style={({ pressed }) => [
-                                    styles.sheetButton,
-                                    pressed && { opacity: 0.8 }
-                                ]}
-                                onPress={() => bottomSheetRef.current?.scrollTo(0)}
-                            >
-                                <Text style={styles.sheetButtonText}>Add to Trip</Text>
-                            </Pressable>
-                        </>
-                    )}
-                </View>
+            <BottomSheet
+                ref={bottomSheetRef}
+                style={{ height: SCREEN_HEIGHT * 0.8 }}
+            >
+                {selectedItem && (
+                    <LocationDetailBottomSheet
+                        item={selectedItem}
+                        onClose={() => bottomSheetRef.current?.scrollTo(0)}
+                    />
+                )}
             </BottomSheet>
         </SafeAreaView>
     );
@@ -264,7 +242,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         marginTop: 20,
-        marginBottom: 24,
+        marginBottom: 20,
     },
     horizontalListContent: {
         paddingHorizontal: 20,
@@ -287,58 +265,7 @@ const styles = StyleSheet.create({
         letterSpacing: 2,
     },
     bottomSheetContent: {
-        padding: 24,
+        paddingHorizontal: 24,
         flex: 1,
-    },
-    sheetTitle: {
-        fontSize: 28,
-        fontWeight: '800',
-        color: '#212529',
-        marginBottom: 12,
-    },
-    sheetDescription: {
-        fontSize: 16,
-        color: '#495057',
-        lineHeight: 24,
-        marginBottom: 24,
-    },
-    sheetInfoRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 40,
-        backgroundColor: '#F8F9FA',
-        padding: 20,
-        borderRadius: 20,
-    },
-    sheetInfoItem: {
-        alignItems: 'center',
-    },
-    sheetInfoLabel: {
-        fontSize: 12,
-        color: '#868E96',
-        textTransform: 'uppercase',
-        letterSpacing: 1,
-        marginBottom: 4,
-    },
-    sheetInfoValue: {
-        fontSize: 16,
-        fontWeight: '700',
-        color: '#212529',
-    },
-    sheetButton: {
-        backgroundColor: '#000000',
-        paddingVertical: 18,
-        borderRadius: 20,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 8,
-        elevation: 5,
-    },
-    sheetButtonText: {
-        color: 'white',
-        fontSize: 18,
-        fontWeight: '700',
     },
 });
