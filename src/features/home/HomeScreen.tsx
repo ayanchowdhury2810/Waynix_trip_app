@@ -1,84 +1,65 @@
-import { View, Text, StyleSheet, FlatList, Dimensions, Pressable } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Dimensions, Pressable, ActivityIndicator } from 'react-native';
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CommonHeader from '../../shared/components/CommonHeader';
+import CommonHeader from '../../components/CommonHeader';
 import ScheduleItem from './components/ScheduleItem';
 import RecommendationCard from './components/RecommendationCard';
 import PlaceCard from './components/PlaceCard';
 import AskAnythingOverlay from './components/AskAnythingOverlay';
-import BottomSheet, { BottomSheetRef } from '../../shared/components/BottomSheet';
-import { IconSymbol } from '../../shared/components/IconSymbol';
+import BottomSheet, { BottomSheetRef } from '../../components/BottomSheet';
 import LocationDetailBottomSheet from './components/LocationDetailBottomSheet';
+import Colors from '../../constants/Colors';
+import { SCHEDULE_DATA, PLACES_DATA } from '../../data/homeData';
+import { Place } from '../../types/place';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-
-const SCHEDULE_DATA = [
-    { id: '1', time: '9:30am - 10:30am', label: 'Breakfast' },
-    { id: '2', time: '9am - 1pm', label: 'Activity 1' },
-    { id: '3', time: '9:30am - 10:30am', label: 'Lunch' },
-    { id: '4', time: '9:30am - 10:30am', label: 'Breakfast' },
-];
-
-const PLACES_DATA = [
-    {
-        id: '1',
-        title: 'Saracen Summit',
-        description: "Explore Saracen Summit's winding trails, perfect for a morning walk.",
-        price: '$$$',
-        distance: '0.8mi',
-        rating: 4.6,
-        reviewCount: 9285,
-        tags: ['Creole', 'Brunch', 'Coffee'],
-        address: '123 Peak View, Highland, NY',
-        imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=600&fit=crop',
-    },
-    {
-        id: '2',
-        title: 'Cedar Canyon',
-        description: 'Explore the lush landscapes of Cedar Canyon while enjoying birdwatching opportunities.',
-        price: '$$$',
-        distance: '2.0mi',
-        rating: 4.5,
-        reviewCount: 9562,
-        tags: ['Mexican', 'Mediterranean', 'Thai'],
-        address: '456 Valley Road, Greenfield, UT',
-        imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&h=600&fit=crop',
-    },
-    {
-        id: '3',
-        title: 'Mount Aerilon',
-        description: 'Hike the scenic trails of Mount Aerilon and discover breathtaking panoramic views.',
-        price: '$$$',
-        distance: '1.2mi',
-        rating: 4.8,
-        reviewCount: 14829,
-        tags: ['Indian', 'Italian', 'Japanese', 'Mediterranean', 'Thai'],
-        address: '228 Park Ave South, New York, NY',
-        imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=600&fit=crop', // Cafe image
-    },
-];
 
 const HomeScreen = () => {
     const [selectedId, setSelectedId] = useState<string | null>(SCHEDULE_DATA[0].id);
     const bottomSheetRef = useRef<BottomSheetRef>(null);
-    const [selectedItem, setSelectedItem] = useState<any>(null);
+    const [selectedItem, setSelectedItem] = useState<Place | null>(null);
+
+    // Pagination States
+    const [displayedPlaces, setDisplayedPlaces] = useState<Place[]>(PLACES_DATA.slice(0, 10));
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     const handlePress = useCallback((item: any) => {
         setSelectedItem(item);
         bottomSheetRef.current?.scrollTo(-SCREEN_HEIGHT * 0.8);
     }, []);
 
-    const buildScreenData = () => {
+    const handleRefresh = useCallback(async () => {
+        setRefreshing(true);
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setDisplayedPlaces(PLACES_DATA.slice(0, 10));
+        setRefreshing(false);
+    }, []);
+
+    const loadMore = useCallback(async () => {
+        if (loadingMore || displayedPlaces.length >= PLACES_DATA.length) return;
+
+        setLoadingMore(true);
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        const nextBatch = PLACES_DATA.slice(displayedPlaces.length, displayedPlaces.length + 10);
+        setDisplayedPlaces(prev => [...prev, ...nextBatch]);
+        setLoadingMore(false);
+    }, [loadingMore, displayedPlaces.length]);
+
+    const buildScreenData = useCallback(() => {
         return [
             { type: 'calendar' },
             { type: 'schedule' },
             { type: 'recommendation' },
             { type: 'sectionHeader', title: "People's Favorite" },
-            ...PLACES_DATA.map(item => ({ type: 'place', ...item })),
+            ...displayedPlaces.map(item => ({ type: 'place', ...item })),
         ];
-    };
+    }, [displayedPlaces]);
 
-    const screenData = useMemo(() => buildScreenData(), []);
+    const screenData = useMemo(() => buildScreenData(), [buildScreenData]);
 
     const renderItem = useCallback(({ item }: { item: any }) => {
         switch (item.type) {
@@ -149,6 +130,15 @@ const HomeScreen = () => {
         }
     }, [selectedId, handlePress]);
 
+    const renderFooter = () => {
+        if (!loadingMore) return null;
+        return (
+            <View style={styles.loaderContainer}>
+                <ActivityIndicator size="large" color={Colors.primary} />
+            </View>
+        );
+    };
+
     return (
         <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
             <CommonHeader />
@@ -159,6 +149,11 @@ const HomeScreen = () => {
                 keyExtractor={(_, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 160 }}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={renderFooter}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
                 initialNumToRender={8}
                 maxToRenderPerBatch={8}
                 windowSize={9}
@@ -187,7 +182,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: Colors.white,
     },
     calendarContainer: {
         flexDirection: 'row',
@@ -201,7 +196,7 @@ const styles = StyleSheet.create({
     monthText: {
         fontSize: 16,
         fontWeight: '300',
-        color: '#6C757D',
+        color: Colors.grey,
         textAlign: 'center',
     },
     daysRow: {
@@ -211,34 +206,34 @@ const styles = StyleSheet.create({
         width: 45,
         height: 45,
         borderRadius: 22.5,
-        backgroundColor: '#F8F9FA',
+        backgroundColor: Colors.surface,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 10,
         borderWidth: 1,
-        borderColor: '#E9ECEF',
+        borderColor: Colors.border,
     },
     activeDay: {
-        backgroundColor: 'white',
-        borderColor: '#FFD1D1',
+        backgroundColor: Colors.white,
+        borderColor: Colors.pinkBorderLight,
     },
     dayLetter: {
         fontSize: 10,
-        color: '#ADB5BD',
+        color: Colors.greyLight,
     },
     dayNumber: {
         fontSize: 16,
         fontWeight: '600',
-        color: '#212529',
+        color: Colors.dark,
     },
     dayLetterActive: {
         fontSize: 10,
-        color: '#D64045',
+        color: Colors.primary,
     },
     dayNumberActive: {
         fontSize: 16,
         fontWeight: '600',
-        color: '#D64045',
+        color: Colors.primary,
     },
     listContainer: {
         marginTop: 20,
@@ -256,16 +251,20 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: 15,
-        color: '#6C757D',
+        color: Colors.grey,
         fontWeight: '400',
     },
     moreOptions: {
         fontSize: 18,
-        color: '#6C757D',
+        color: Colors.grey,
         letterSpacing: 2,
     },
     bottomSheetContent: {
         paddingHorizontal: 24,
         flex: 1,
+    },
+    loaderContainer: {
+        paddingVertical: 20,
+        alignItems: 'center',
     },
 });

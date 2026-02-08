@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
+import Colors from '../constants/Colors';
 
 const CommonHeader = () => {
     const navigation = useNavigation();
@@ -9,7 +10,7 @@ const CommonHeader = () => {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons name="arrow-back" size={24} color="black" />
+                <Ionicons name="arrow-back" size={24} color={Colors.black} />
             </TouchableOpacity>
             <TouchableOpacity>
                 <Text style={styles.saveText}>Save</Text>
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     },
     saveText: {
         fontSize: 16,
-        color: '#FF4D4D', // Pinkish-red color from the image
+        color: Colors.primary, // Pinkish-red color from the image
         fontWeight: '600',
     },
 });

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
+import Colors from '../../../constants/Colors';
+import { ScheduleItemData } from '@/src/types/place';
 
-interface ScheduleItemProps {
-    time: string;
-    label: string;
+interface ScheduleItemProps extends Omit<ScheduleItemData, 'id'> {
     isSelected: boolean;
     onPress: () => void;
 }
@@ -50,12 +50,12 @@ const styles = StyleSheet.create({
         minWidth: 100,
     },
     selectedContainer: {
-        backgroundColor: '#FFE5E5', // Light pink background
-        borderColor: '#FFb6c1',   // Pinkish border
+        backgroundColor: Colors.pinkLight, // Light pink background
+        borderColor: Colors.pinkBorder,   // Pinkish border
     },
     unselectedContainer: {
-        backgroundColor: '#F8F9FA', // Light grey background
-        borderColor: '#F8F9FA',
+        backgroundColor: Colors.surface, // Light grey background
+        borderColor: Colors.surface,
     },
     timeText: {
         fontSize: 12,
@@ -66,10 +66,10 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     selectedText: {
-        color: '#D64045', // Darker pink/red text
+        color: Colors.primary, // Darker pink/red text
     },
     unselectedText: {
-        color: '#6C757D', // Grey text
+        color: Colors.grey, // Grey text
     },
 });
 

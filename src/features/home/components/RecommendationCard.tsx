@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import React from 'react';
-import Tag from '../../../shared/components/Tag';
-import { IconSymbol } from '../../../shared/components/IconSymbol';
+import Tag from '../../../components/Tag';
+import { IconSymbol } from '../../../components/IconSymbol';
+import Colors from '../../../constants/Colors';
 import { BlurView } from 'expo-blur';
 
 interface RecommendationCardProps {
@@ -65,7 +66,7 @@ const RecommendationCard = ({
 
                     <View style={styles.ratingAndPriceRow}>
                         <View style={styles.ratingContainer}>
-                            <IconSymbol name="star.fill" size={24} color="#FCC419" />
+                            <IconSymbol name="star.fill" size={24} color={Colors.starYellow} />
                             <Text style={styles.ratingText}>{rating}</Text>
                             <Text style={styles.reviewCount}>({reviewCount.toLocaleString()})</Text>
                         </View>
@@ -77,7 +78,7 @@ const RecommendationCard = ({
             {/* Bottom Row: Address */}
             <View style={styles.divider} />
             <Pressable style={styles.addressContainer}>
-                <IconSymbol name="mappin.and.ellipse" size={20} color="#ADB5BD" />
+                <IconSymbol name="mappin.and.ellipse" size={20} color={Colors.greyLight} />
                 <Text style={styles.addressText}>{address}</Text>
             </Pressable>
         </Pressable>
@@ -88,19 +89,19 @@ export default React.memo(RecommendationCard);
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: Colors.white,
         borderRadius: 24,
         padding: 12,
         marginBottom: 16,
         marginHorizontal: 20,
         // Added shadow for premium look
-        shadowColor: '#000',
+        shadowColor: Colors.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.05,
         shadowRadius: 10,
         elevation: 2,
         borderWidth: 1,
-        borderColor: '#F1F3F5',
+        borderColor: Colors.borderLight,
     },
     contentRow: {
         flexDirection: 'row',
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden', // Essential for BlurView borderRadius
     },
     badgeText: {
-        color: 'white',
+        color: Colors.white,
         fontSize: 10,
         fontWeight: '600',
     },
@@ -143,18 +144,18 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#212529',
+        color: Colors.dark,
         flex: 1,
         marginRight: 4,
     },
     distance: {
         fontSize: 14,
-        color: '#868E96',
+        color: Colors.greyMedium,
         fontWeight: '400',
     },
     description: {
         fontSize: 14,
-        color: '#868E96',
+        color: Colors.greyMedium,
         lineHeight: 16,
         marginBottom: 5,
     },
@@ -174,24 +175,24 @@ const styles = StyleSheet.create({
     },
     ratingText: {
         fontSize: 16,
-        color: '#868E96',
+        color: Colors.greyMedium,
         marginLeft: 4,
         textDecorationLine: 'underline',
     },
     reviewCount: {
         fontSize: 16,
-        color: '#868E96',
+        color: Colors.greyMedium,
         marginLeft: 2,
         textDecorationLine: 'underline',
     },
     price: {
         fontSize: 20,
-        color: '#DEE2E6', // Light gray for the $$$
+        color: Colors.greyLightest, // Light gray for the $$$
         fontWeight: '300',
     },
     divider: {
         height: 1,
-        backgroundColor: '#F1F3F5',
+        backgroundColor: Colors.borderLight,
         marginVertical: 12,
     },
     addressContainer: {
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
     },
     addressText: {
         fontSize: 14,
-        color: '#868E96',
+        color: Colors.greyMedium,
         marginLeft: 8,
         textDecorationLine: 'underline',
     },

@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
+import Colors from '../constants/Colors';
 
 interface TagProps {
     label: string;
@@ -26,21 +27,21 @@ export default Tag;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FFE5E5',
+        backgroundColor: Colors.pinkLight,
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 20,
         marginRight: 8,
         borderWidth: 1,
-        borderColor: '#FFb6c1',
+        borderColor: Colors.pinkBorder,
     },
     secondaryContainer: {
         backgroundColor: 'transparent',
     },
     text: {
-        color: '#D64045',
+        color: Colors.primary,
         fontSize: 12,
-        fontWeight: '600',
+        fontWeight: '400',
     },
     secondaryText: {
         fontWeight: '400',

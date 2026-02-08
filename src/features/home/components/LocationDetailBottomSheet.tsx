@@ -1,62 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { IconSymbol } from '@/src/shared/components/IconSymbol';
-import Tag from '@/src/shared/components/Tag';
+import { IconSymbol } from '@/src/components/IconSymbol';
+import Tag from '@/src/components/Tag';
+import Colors from '@/src/constants/Colors';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming, withSequence } from 'react-native-reanimated';
 import ReviewCard from './ReviewCard';
+import { Place } from '@/src/types/place';
+import { REVIEWS_DATA } from '@/src/data/reviewsData';
 
 interface LocationDetailBottomSheetProps {
-    item: any;
+    item: Place;
     onClose: () => void;
 }
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const TOGGLE_PADDING = 24;
 const TOGGLE_WIDTH = SCREEN_WIDTH - (TOGGLE_PADDING * 2);
-
-const REVIEWS_DATA = [
-    {
-        id: '1',
-        name: "Sarabeth's",
-        profileImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop',
-        rating: 5,
-        price: '$$$$',
-        tags: ['Brunch', 'Classic', 'Cozy'],
-        description: "Start your day at Sarabeth's, a New York institution known for its exceptional brunch and cozy atmosphere.",
-        images: [
-            'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=300&fit=crop',
-            'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=300&fit=crop',
-            'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=400&h=300&fit=crop',
-        ],
-    },
-    {
-        id: '2',
-        name: "Clinton St. Baking",
-        profileImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop',
-        rating: 4,
-        price: '$$$',
-        tags: ['Pancakes', 'Bakery', 'Popular'],
-        description: "Best pancakes in the city. The wait is worth it for their blueberry pancakes and maple butter.",
-        images: [
-            'https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&h=300&fit=crop',
-            'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=400&h=300&fit=crop',
-        ],
-    },
-    {
-        id: '3',
-        name: "Jacob's Pickles",
-        profileImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop',
-        rating: 5,
-        price: '$$$',
-        tags: ['Southern', 'Comfort Food', 'Brunch'],
-        description: "Southern comfort food at its best. The biscuits and gravity are a must-try.",
-        images: [
-            'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop',
-            'https://images.unsplash.com/photo-1504387828074-ce794a645117?w=400&h=300&fit=crop',
-        ],
-    },
-];
 
 const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetProps) => {
     const insets = useSafeAreaInsets();
@@ -99,13 +59,13 @@ const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetP
                 {/* Background Stars (Gray) */}
                 <View style={styles.starRow}>
                     {[1, 2, 3, 4, 5].map((s) => (
-                        <IconSymbol key={`bg-${s}`} name="star.fill" size={16} color="#E9ECEF" />
+                        <IconSymbol key={`bg-${s}`} name="star.fill" size={16} color={Colors.border} />
                     ))}
                 </View>
                 {/* Foreground Stars (Yellow) */}
                 <View style={[styles.starRow, styles.starForeground, { width: `${(rating / 5) * 100}%` }]}>
                     {[1, 2, 3, 4, 5].map((s) => (
-                        <IconSymbol key={`fg-${s}`} name="star.fill" size={16} color="#D4A017" />
+                        <IconSymbol key={`fg-${s}`} name="star.fill" size={16} color={Colors.starGold} />
                     ))}
                 </View>
             </View>
@@ -122,7 +82,7 @@ const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetP
                             <IconSymbol
                                 name={isLiked ? "heart.fill" : "heart"}
                                 size={20}
-                                color={isLiked ? "#FF3B30" : "#ADB5BD"}
+                                color={isLiked ? Colors.error : Colors.greyLight}
                             />
                         </Animated.View>
                     </Pressable>
@@ -130,7 +90,7 @@ const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetP
                         style={styles.iconButton}
                         onPress={onClose}
                     >
-                        <IconSymbol name="xmark" size={20} color="#ADB5BD" />
+                        <IconSymbol name="xmark" size={20} color={Colors.greyLight} />
                     </Pressable>
                 </View>
             </View>
@@ -182,12 +142,12 @@ const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetP
 
             <View style={styles.statusRow}>
                 <View style={styles.statusPill}>
-                    <IconSymbol name="clock.fill" size={18} color="#D4A017" />
+                    <IconSymbol name="clock.fill" size={18} color={Colors.starGold} />
                     <Text style={styles.statusText}>Closes Soon | 22:00 pm</Text>
-                    <IconSymbol name="chevron.down" size={18} color="#D4A017" />
+                    <IconSymbol name="chevron.down" size={18} color={Colors.starGold} />
                 </View>
                 <Pressable style={styles.websitePill}>
-                    <IconSymbol name="globe" size={18} color="#007AFF" />
+                    <IconSymbol name="globe" size={18} color={Colors.info} />
                     <Text style={styles.websiteText}>Website</Text>
                 </Pressable>
             </View>
@@ -227,7 +187,7 @@ const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetP
                     ]}
                     onPress={onClose}
                 >
-                    <Text style={styles.sheetButtonText}>Add to Trip</Text>
+                    <Text style={styles.sheetButtonText}>Make Primary</Text>
                 </Pressable>
             </View>
         </View>
@@ -257,14 +217,14 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        backgroundColor: '#F8F9FA',
+        backgroundColor: Colors.surface,
         justifyContent: 'center',
         alignItems: 'center',
     },
     sheetTitle: {
         fontSize: 28,
         fontWeight: '800',
-        color: '#212529',
+        color: Colors.dark,
     },
     sheetTags: {
         flexDirection: 'row',
@@ -274,7 +234,7 @@ const styles = StyleSheet.create({
     },
     toggleContainer: {
         flexDirection: 'row',
-        backgroundColor: '#F8F9FA',
+        backgroundColor: Colors.surface,
         borderRadius: 14,
         marginBottom: 24,
         height: 48,
@@ -285,10 +245,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '50%',
         height: '100%',
-        backgroundColor: '#FFF0F0',
+        backgroundColor: Colors.pinkLight,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#FFD1D1',
+        borderColor: Colors.pinkBorderLight,
         top: 4,
         left: 4,
     },
@@ -303,13 +263,13 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     activeToggleText: {
-        color: '#D64045',
+        color: Colors.primary,
     },
     inactiveToggleText: {
-        color: '#868E96',
+        color: Colors.greyMedium,
     },
     highlightCard: {
-        backgroundColor: '#FFF0F0',
+        backgroundColor: Colors.pinkLight,
         padding: 20,
         borderRadius: 20,
         marginBottom: 20,
@@ -317,7 +277,7 @@ const styles = StyleSheet.create({
     highlightTitle: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#D64045',
+        color: Colors.primary,
         marginBottom: 12,
     },
     highlightList: {
@@ -325,7 +285,7 @@ const styles = StyleSheet.create({
     },
     highlightBullet: {
         fontSize: 16,
-        color: '#D64045',
+        color: Colors.primary,
         opacity: 0.8,
     },
     statusRow: {
@@ -338,28 +298,28 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#FFD700',
+        borderColor: Colors.gold,
         borderRadius: 12,
         paddingHorizontal: 12,
         paddingVertical: 8,
         gap: 6,
     },
     statusText: {
-        color: '#D4A017',
+        color: Colors.starGold,
         fontSize: 15,
         fontWeight: '500',
     },
     websitePill: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#E7F3FF',
+        backgroundColor: Colors.infoBackground,
         borderRadius: 12,
         paddingHorizontal: 12,
         paddingVertical: 8,
         gap: 6,
     },
     websiteText: {
-        color: '#007AFF',
+        color: Colors.info,
         fontSize: 15,
         fontWeight: '500',
     },
@@ -371,7 +331,7 @@ const styles = StyleSheet.create({
     },
     sheetDescription: {
         fontSize: 16,
-        color: '#495057',
+        color: Colors.greyDark,
         lineHeight: 24,
         marginBottom: 24,
     },
@@ -379,7 +339,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 40,
-        backgroundColor: '#F8F9FA',
+        backgroundColor: Colors.surface,
         padding: 20,
         borderRadius: 20,
     },
@@ -388,7 +348,7 @@ const styles = StyleSheet.create({
     },
     sheetInfoLabel: {
         fontSize: 12,
-        color: '#868E96',
+        color: Colors.greyMedium,
         textTransform: 'uppercase',
         letterSpacing: 1,
         marginBottom: 4,
@@ -396,7 +356,7 @@ const styles = StyleSheet.create({
     sheetInfoValue: {
         fontSize: 16,
         fontWeight: '700',
-        color: '#212529',
+        color: Colors.dark,
     },
     reviewSummarySection: {
         marginBottom: 20,
@@ -404,12 +364,12 @@ const styles = StyleSheet.create({
     reviewSummaryTitle: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#495057',
+        color: Colors.greyDark,
         marginBottom: 2,
     },
     reviewPoweredBy: {
         fontSize: 12,
-        color: '#ADB5BD',
+        color: Colors.greyLight,
         marginBottom: 12,
     },
     reviewRatingRow: {
@@ -420,7 +380,7 @@ const styles = StyleSheet.create({
     reviewRatingValue: {
         fontSize: 20,
         fontWeight: '700',
-        color: '#495057',
+        color: Colors.greyDark,
     },
     starRatingContainer: {
         position: 'relative',
@@ -440,7 +400,7 @@ const styles = StyleSheet.create({
     },
     reviewCount: {
         fontSize: 16,
-        color: '#6C757D',
+        color: Colors.grey,
     },
     topReviewsSection: {
         marginTop: 10,
@@ -449,32 +409,32 @@ const styles = StyleSheet.create({
     topReviewsTitle: {
         fontSize: 20,
         fontWeight: '700',
-        color: '#495057',
+        color: Colors.greyDark,
     },
     footer: {
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: 'white',
+        backgroundColor: Colors.white,
         paddingHorizontal: 24,
         paddingTop: 12,
         borderTopWidth: 1,
-        borderTopColor: '#F1F3F5',
+        borderTopColor: Colors.borderLight,
     },
     sheetButton: {
-        backgroundColor: '#000000',
+        backgroundColor: Colors.primary,
         paddingVertical: 18,
-        borderRadius: 20,
+        borderRadius: 30,
         alignItems: 'center',
-        shadowColor: '#000',
+        shadowColor: Colors.black,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 8,
         elevation: 5,
     },
     sheetButtonText: {
-        color: 'white',
+        color: Colors.white,
         fontSize: 18,
         fontWeight: '700',
     },
@@ -484,12 +444,12 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#212529',
+        color: Colors.dark,
         marginBottom: 12,
     },
     bulletItem: {
         fontSize: 16,
-        color: '#495057',
+        color: Colors.greyDark,
         marginBottom: 8,
     },
 });

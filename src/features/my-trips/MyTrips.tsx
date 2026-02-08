@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CommonHeader from '../../shared/components/CommonHeader';
+import CommonHeader from '../../components/CommonHeader';
 
 const MyTrips = () => {
     return (

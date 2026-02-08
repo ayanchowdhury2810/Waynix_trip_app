@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Colors from '../../../constants/Colors';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -20,7 +21,7 @@ const AskAnythingOverlay = () => {
                 >
                     <Text style={styles.placeholder}>Ask anything about this breakfast…</Text>
                     <View style={styles.iconContainer}>
-                        <Ionicons name="sparkles" size={16} color="#4A4A68" />
+                        <Ionicons name="sparkles" size={16} color={Colors.overlayIcon} />
                     </View>
                 </Pressable>
             </BlurView>
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
 
         // Premium shadow
-        shadowColor: '#000',
+        shadowColor: Colors.black,
         shadowOffset: { width: 0, height: 8 },
         shadowOpacity: 0.12,
         shadowRadius: 16,
@@ -63,14 +64,14 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         fontSize: 16,
-        color: '#8E8EA9',
+        color: Colors.overlayText,
         fontWeight: '400',
     },
     iconContainer: {
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: '#F2F2F7',
+        backgroundColor: Colors.overlayBackground,
         alignItems: 'center',
         justifyContent: 'center',
     },

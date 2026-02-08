@@ -8,6 +8,7 @@ import Animated, {
     runOnJS,
     Easing,
 } from 'react-native-reanimated';
+import Colors from '../constants/Colors';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -119,7 +120,7 @@ const BottomSheet = React.forwardRef<BottomSheetRef, BottomSheetProps>(
 const styles = StyleSheet.create({
     bottomSheetContainer: {
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: Colors.white,
         position: 'absolute',
         top: SCREEN_HEIGHT,
         borderTopLeftRadius: 25,
@@ -137,12 +138,12 @@ const styles = StyleSheet.create({
     line: {
         width: 75,
         height: 4,
-        backgroundColor: '#E9ECEF',
+        backgroundColor: Colors.border,
         borderRadius: 2,
     },
     backdrop: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        backgroundColor: Colors.backdrop,
     },
 });
 

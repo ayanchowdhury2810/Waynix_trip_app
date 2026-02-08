@@ -1,17 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
-import Tag from '@/src/shared/components/Tag';
-import { IconSymbol } from '@/src/shared/components/IconSymbol';
+import Tag from '@/src/components/Tag';
+import { IconSymbol } from '@/src/components/IconSymbol';
+import Colors from '@/src/constants/Colors';
+import { Review } from '@/src/types/review';
 
-interface ReviewCardProps {
-    name: string;
-    profileImage: string;
-    rating: number;
-    price: string;
-    tags: string[];
-    description: string;
-    images: string[];
-}
+interface ReviewCardProps extends Review { }
 
 const ReviewCard = ({
     name,
@@ -30,7 +24,7 @@ const ReviewCard = ({
                         key={s}
                         name="star.fill"
                         size={14}
-                        color={s <= rating ? '#D4A017' : '#E9ECEF'}
+                        color={s <= rating ? Colors.starGold : Colors.border}
                     />
                 ))}
             </View>
@@ -84,7 +78,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         paddingVertical: 16,
         borderBottomWidth: 1,
-        borderBottomColor: '#F1F3F5',
+        borderBottomColor: Colors.borderLight,
     },
     leftCol: {
         marginRight: 16,
@@ -93,7 +87,7 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 24,
-        backgroundColor: '#E9ECEF',
+        backgroundColor: Colors.border,
     },
     rightCol: {
         flex: 1,
@@ -107,7 +101,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#212529',
+        color: Colors.greyMedium,
     },
     ratingRow: {
         alignItems: 'flex-end',
@@ -119,7 +113,7 @@ const styles = StyleSheet.create({
     },
     price: {
         fontSize: 16,
-        color: '#CED4DA', // Light grey for the $$$
+        color: Colors.greyLighter, // Light grey for the $$$
         fontWeight: '500',
     },
     tagsContainer: {
@@ -130,7 +124,7 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 15,
-        color: '#495057',
+        color: Colors.greyDark,
         lineHeight: 20,
         marginBottom: 12,
     },
@@ -145,6 +139,6 @@ const styles = StyleSheet.create({
         width: 140,
         height: 100,
         borderRadius: 12,
-        backgroundColor: '#E9ECEF',
+        backgroundColor: Colors.border,
     },
 });

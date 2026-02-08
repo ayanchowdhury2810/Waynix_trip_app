@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
-import Tag from '../../../shared/components/Tag';
-import { IconSymbol } from '../../../shared/components/IconSymbol';
+import Tag from '../../../components/Tag';
+import { IconSymbol } from '../../../components/IconSymbol';
+import Colors from '../../../constants/Colors';
 
 interface PlaceCardProps {
     title: string;
@@ -49,7 +50,7 @@ const PlaceCard = ({
                     ))}
                 </View>
                 <View style={styles.ratingContainer}>
-                    <IconSymbol name="star.fill" size={16} color="#FCC419" />
+                    <IconSymbol name="star.fill" size={16} color={Colors.starYellow} />
                     <Text style={styles.ratingText}>{rating}</Text>
                     <Text style={styles.reviewCount}>({reviewCount.toLocaleString()})</Text>
                 </View>
@@ -62,7 +63,7 @@ export default React.memo(PlaceCard);
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#F8F9FA',
+        backgroundColor: Colors.surface,
         borderRadius: 20,
         paddingVertical: 8,
         paddingHorizontal: 12,
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: '700',
-        color: '#212529',
+        color: Colors.dark,
     },
     rightInfo: {
         flexDirection: 'row',
@@ -86,16 +87,16 @@ const styles = StyleSheet.create({
     },
     price: {
         fontSize: 14,
-        color: '#CED4DA', // Light grey for the $$$
+        color: Colors.greyLighter, // Light grey for the $$$
         marginRight: 10,
     },
     distance: {
         fontSize: 14,
-        color: '#6C757D',
+        color: Colors.grey,
     },
     description: {
         fontSize: 14,
-        color: '#868E96',
+        color: Colors.greyMedium,
         lineHeight: 16,
         marginBottom: 6,
     },
@@ -116,13 +117,13 @@ const styles = StyleSheet.create({
     },
     ratingText: {
         fontSize: 14,
-        color: '#6C757D',
+        color: Colors.grey,
         marginLeft: 4,
         textDecorationLine: 'underline',
     },
     reviewCount: {
         fontSize: 14,
-        color: '#6C757D',
+        color: Colors.grey,
         marginLeft: 2,
         textDecorationLine: 'underline',
     },
