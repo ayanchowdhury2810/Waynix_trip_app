@@ -37,8 +37,8 @@ const ReviewCard = ({
                 <Image source={{ uri: profileImage }} style={styles.profileImage} />
             </View>
             <View style={styles.rightCol}>
+                <Text style={styles.name}>{name}</Text>
                 <View style={styles.header}>
-                    <Text style={styles.name}>{name}</Text>
                     <View style={styles.ratingRow}>
                         {renderStars(rating)}
                         <Text style={styles.price}>{price}</Text>
@@ -47,7 +47,7 @@ const ReviewCard = ({
 
                 <View style={styles.tagsContainer}>
                     {tags.map((tag, index) => (
-                        <Tag key={index} label={tag} variant="secondary" />
+                        <Tag key={index} label={tag} />
                     ))}
                 </View>
 
@@ -104,32 +104,34 @@ const styles = StyleSheet.create({
         color: Colors.greyMedium,
     },
     ratingRow: {
-        alignItems: 'flex-end',
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     starRow: {
         flexDirection: 'row',
         gap: 2,
-        marginBottom: 4,
     },
     price: {
         fontSize: 16,
-        color: Colors.greyLighter, // Light grey for the $$$
+        color: Colors.greyLighter,
         fontWeight: '500',
     },
     tagsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 8,
-        marginBottom: 12,
+        rowGap: 4,
+        marginBottom: 8,
     },
     description: {
         fontSize: 15,
-        color: Colors.greyDark,
-        lineHeight: 20,
+        color: Colors.greyMedium,
+        lineHeight: 18,
         marginBottom: 12,
     },
     imageScroll: {
-        marginRight: -24, // Allow scroll to screen edge
+        marginRight: -24,
     },
     imageScrollContent: {
         paddingRight: 24,

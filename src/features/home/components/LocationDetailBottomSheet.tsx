@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconSymbol } from '@/src/components/IconSymbol';
 import Tag from '@/src/components/Tag';
 import Colors from '@/src/constants/Colors';
+import CustomButton from '@/src/components/CustomButton';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming, withSequence } from 'react-native-reanimated';
 import ReviewCard from './ReviewCard';
 import { Place } from '@/src/types/place';
@@ -56,13 +57,11 @@ const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetP
 
         return (
             <View style={styles.starRatingContainer}>
-                {/* Background Stars (Gray) */}
                 <View style={styles.starRow}>
                     {[1, 2, 3, 4, 5].map((s) => (
                         <IconSymbol key={`bg-${s}`} name="star.fill" size={16} color={Colors.border} />
                     ))}
                 </View>
-                {/* Foreground Stars (Yellow) */}
                 <View style={[styles.starRow, styles.starForeground, { width: `${(rating / 5) * 100}%` }]}>
                     {[1, 2, 3, 4, 5].map((s) => (
                         <IconSymbol key={`fg-${s}`} name="star.fill" size={16} color={Colors.starGold} />
@@ -129,66 +128,72 @@ const LocationDetailBottomSheet = ({ item, onClose }: LocationDetailBottomSheetP
                 </Pressable>
             </View>
 
-            <View style={styles.highlightCard}>
-                <Text style={styles.highlightTitle}>Why People's Choice?</Text>
-                <View style={styles.highlightList}>
-                    <Text style={styles.highlightBullet}>• Explore the captivating trails.</Text>
-                    <Text style={styles.highlightBullet}>• A haven for nature enthusiasts.</Text>
-                    <Text style={styles.highlightBullet}>• Ascend through lush forests.</Text>
-                    <Text style={styles.highlightBullet}>• Discover hidden waterfalls.</Text>
-                    <Text style={styles.highlightBullet}>• Breathtaking panoramic views.</Text>
-                </View>
-            </View>
+            {activeTab === 'overview' && (
+                <>
+                    <View style={styles.highlightCard}>
+                        <Text style={styles.highlightTitle}>Why People's Choice?</Text>
+                        <View style={styles.highlightList}>
+                            <Text style={styles.highlightBullet}>• Explore the captivating trails.</Text>
+                            <Text style={styles.highlightBullet}>• A haven for nature enthusiasts.</Text>
+                            <Text style={styles.highlightBullet}>• Ascend through lush forests.</Text>
+                            <Text style={styles.highlightBullet}>• Discover hidden waterfalls.</Text>
+                            <Text style={styles.highlightBullet}>• Breathtaking panoramic views.</Text>
+                        </View>
+                    </View>
 
-            <View style={styles.statusRow}>
-                <View style={styles.statusPill}>
-                    <IconSymbol name="clock.fill" size={18} color={Colors.starGold} />
-                    <Text style={styles.statusText}>Closes Soon | 22:00 pm</Text>
-                    <IconSymbol name="chevron.down" size={18} color={Colors.starGold} />
-                </View>
-                <Pressable style={styles.websitePill}>
-                    <IconSymbol name="globe" size={18} color={Colors.info} />
-                    <Text style={styles.websiteText}>Website</Text>
-                </Pressable>
-            </View>
+                    <View style={styles.statusRow}>
+                        <View style={styles.statusPill}>
+                            <IconSymbol name="clock.fill" size={18} color={Colors.starGold} />
+                            <Text style={styles.statusText}>Closes Soon | 22:00 pm</Text>
+                            <IconSymbol name="chevron.down" size={18} color={Colors.starGold} />
+                        </View>
+                        <Pressable style={styles.websitePill}>
+                            <IconSymbol name="globe" size={18} color={Colors.info} />
+                            <Text style={styles.websiteText}>Website</Text>
+                        </Pressable>
+                    </View>
 
-            <View style={styles.reviewSummarySection}>
-                <Text style={styles.reviewSummaryTitle}>Review Summary</Text>
-                <Text style={styles.reviewPoweredBy}>powered by Google</Text>
-                <View style={styles.reviewRatingRow}>
-                    <Text style={styles.reviewRatingValue}>{item.rating}</Text>
-                    {renderStars(item.rating)}
-                    <Text style={styles.reviewCount}>({item.reviewCount.toLocaleString()})</Text>
-                </View>
-            </View>
+                    <View style={styles.reviewSummarySection}>
+                        <Text style={styles.reviewSummaryTitle}>Review Summary</Text>
+                        <Text style={styles.reviewPoweredBy}>powered by Google</Text>
+                        <View style={styles.reviewRatingRow}>
+                            <Text style={styles.reviewRatingValue}>{item.rating}</Text>
+                            {renderStars(item.rating)}
+                            <Text style={styles.reviewCount}>({item.reviewCount.toLocaleString()})</Text>
+                        </View>
+                    </View>
 
-            <View style={styles.topReviewsSection}>
-                <Text style={styles.topReviewsTitle}>Top Reviews</Text>
-            </View>
+                    <View style={styles.topReviewsSection}>
+                        <Text style={styles.topReviewsTitle}>Top Reviews</Text>
+                    </View>
+                </>
+            )}
         </View>
     );
 
     return (
         <View style={styles.container}>
             <FlatList
-                data={REVIEWS_DATA}
+                data={activeTab === 'overview' ? REVIEWS_DATA : []}
                 renderItem={({ item: review }) => <ReviewCard {...review} />}
                 ListHeaderComponent={renderHeader}
+                ListEmptyComponent={
+                    activeTab === 'videos' ? (
+                        <View style={styles.emptyStateContainer}>
+                            <Text style={styles.emptyStateText}>No videos available at the moment</Text>
+                        </View>
+                    ) : null
+                }
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 120 + insets.bottom }}
                 keyExtractor={(review) => review.id}
             />
 
-            <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 74) }]}>
-                <Pressable
-                    style={({ pressed }) => [
-                        styles.sheetButton,
-                        pressed && { opacity: 0.8 }
-                    ]}
+            <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 24) }]}>
+                <CustomButton
+                    title="Make Primary"
                     onPress={onClose}
-                >
-                    <Text style={styles.sheetButtonText}>Make Primary</Text>
-                </Pressable>
+                />
             </View>
         </View>
     );
@@ -236,7 +241,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: Colors.surface,
         borderRadius: 14,
-        marginBottom: 24,
+        marginBottom: 12,
         height: 48,
         position: 'relative',
         padding: 4,
@@ -270,18 +275,19 @@ const styles = StyleSheet.create({
     },
     highlightCard: {
         backgroundColor: Colors.pinkLight,
-        padding: 20,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
         borderRadius: 20,
-        marginBottom: 20,
+        marginBottom: 12,
     },
     highlightTitle: {
         fontSize: 18,
         fontWeight: '700',
         color: Colors.primary,
-        marginBottom: 12,
+        marginBottom: 5,
     },
     highlightList: {
-        gap: 4,
+        gap: 2,
     },
     highlightBullet: {
         fontSize: 16,
@@ -292,7 +298,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 24,
+        marginBottom: 12,
     },
     statusPill: {
         flexDirection: 'row',
@@ -301,7 +307,7 @@ const styles = StyleSheet.create({
         borderColor: Colors.gold,
         borderRadius: 12,
         paddingHorizontal: 12,
-        paddingVertical: 8,
+        paddingVertical: 6,
         gap: 6,
     },
     statusText: {
@@ -315,7 +321,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.infoBackground,
         borderRadius: 12,
         paddingHorizontal: 12,
-        paddingVertical: 8,
+        paddingVertical: 6,
         gap: 6,
     },
     websiteText: {
@@ -359,13 +365,13 @@ const styles = StyleSheet.create({
         color: Colors.dark,
     },
     reviewSummarySection: {
-        marginBottom: 20,
+        marginBottom: 12,
     },
     reviewSummaryTitle: {
         fontSize: 18,
         fontWeight: '700',
         color: Colors.greyDark,
-        marginBottom: 2,
+        marginBottom: 1,
     },
     reviewPoweredBy: {
         fontSize: 12,
@@ -375,7 +381,7 @@ const styles = StyleSheet.create({
     reviewRatingRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8,
+        gap: 6,
     },
     reviewRatingValue: {
         fontSize: 20,
@@ -384,7 +390,7 @@ const styles = StyleSheet.create({
     },
     starRatingContainer: {
         position: 'relative',
-        width: 90, // 16 * 5 + gap
+        width: 90,
         height: 20,
         justifyContent: 'center',
     },
@@ -403,8 +409,7 @@ const styles = StyleSheet.create({
         color: Colors.grey,
     },
     topReviewsSection: {
-        marginTop: 10,
-        marginBottom: 16,
+        marginBottom: 12,
     },
     topReviewsTitle: {
         fontSize: 20,
@@ -422,22 +427,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: Colors.borderLight,
     },
-    sheetButton: {
-        backgroundColor: Colors.primary,
-        paddingVertical: 18,
-        borderRadius: 30,
-        alignItems: 'center',
-        shadowColor: Colors.black,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 8,
-        elevation: 5,
-    },
-    sheetButtonText: {
-        color: Colors.white,
-        fontSize: 18,
-        fontWeight: '700',
-    },
     extraContent: {
         marginBottom: 24,
     },
@@ -451,5 +440,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: Colors.greyDark,
         marginBottom: 8,
+    },
+    emptyStateContainer: {
+        flex: 1,
+        height: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    emptyStateText: {
+        fontSize: 16,
+        color: Colors.greyLight,
+        fontWeight: '500',
     },
 });

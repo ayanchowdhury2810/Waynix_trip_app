@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, FlatList, Dimensions, Pressable, ActivityIndica
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CommonHeader from '../../components/CommonHeader';
+import HorizontalCalendar from '../../components/HorizontalCalendar';
 import ScheduleItem from './components/ScheduleItem';
 import RecommendationCard from './components/RecommendationCard';
 import PlaceCard from './components/PlaceCard';
@@ -65,25 +66,9 @@ const HomeScreen = () => {
         switch (item.type) {
             case 'calendar':
                 return (
-                    <View style={styles.calendarContainer}>
-                        <View style={styles.monthColumn}>
-                            <Text style={styles.monthText}>D{'\n'}E{'\n'}C</Text>
-                        </View>
-                        <View style={styles.daysRow}>
-                            <View style={[styles.dayCircle, styles.activeDay]}>
-                                <Text style={styles.dayLetterActive}>M</Text>
-                                <Text style={styles.dayNumberActive}>1</Text>
-                            </View>
-                            <View style={styles.dayCircle}>
-                                <Text style={styles.dayLetter}>T</Text>
-                                <Text style={styles.dayNumber}>2</Text>
-                            </View>
-                            <View style={styles.dayCircle}>
-                                <Text style={styles.dayLetter}>W</Text>
-                                <Text style={styles.dayNumber}>3</Text>
-                            </View>
-                        </View>
-                    </View>
+                    <HorizontalCalendar
+                        onDateSelect={(date) => console.log('Selected date:', date)}
+                    />
                 );
 
             case 'schedule':
@@ -128,7 +113,7 @@ const HomeScreen = () => {
             default:
                 return null;
         }
-    }, [selectedId, handlePress]);
+    }, [selectedId, handlePress, displayedPlaces]);
 
     const renderFooter = () => {
         if (!loadingMore) return null;
@@ -183,57 +168,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.white,
-    },
-    calendarContainer: {
-        flexDirection: 'row',
-        paddingHorizontal: 20,
-        marginTop: 10,
-        alignItems: 'center',
-    },
-    monthColumn: {
-        marginRight: 15,
-    },
-    monthText: {
-        fontSize: 16,
-        fontWeight: '300',
-        color: Colors.grey,
-        textAlign: 'center',
-    },
-    daysRow: {
-        flexDirection: 'row',
-    },
-    dayCircle: {
-        width: 45,
-        height: 45,
-        borderRadius: 22.5,
-        backgroundColor: Colors.surface,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 10,
-        borderWidth: 1,
-        borderColor: Colors.border,
-    },
-    activeDay: {
-        backgroundColor: Colors.white,
-        borderColor: Colors.pinkBorderLight,
-    },
-    dayLetter: {
-        fontSize: 10,
-        color: Colors.greyLight,
-    },
-    dayNumber: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: Colors.dark,
-    },
-    dayLetterActive: {
-        fontSize: 10,
-        color: Colors.primary,
-    },
-    dayNumberActive: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: Colors.primary,
     },
     listContainer: {
         marginTop: 20,

@@ -43,7 +43,7 @@ const RecommendationCard = ({
                 <View style={styles.imageContainer}>
                     <Image source={{ uri: imageUrl }} style={styles.image} />
                     <BlurView intensity={60} tint="dark" style={styles.badge}>
-                        <Text style={styles.badgeText}>Recommended</Text>
+                        <Text style={styles.badgeText} numberOfLines={1} ellipsizeMode="tail">Recommended</Text>
                     </BlurView>
                 </View>
 
@@ -54,7 +54,7 @@ const RecommendationCard = ({
                         <Text style={styles.distance}>{distance}</Text>
                     </View>
 
-                    <Text style={styles.description} numberOfLines={3}>
+                    <Text style={styles.description} numberOfLines={3} ellipsizeMode="tail">
                         {description}
                     </Text>
 
