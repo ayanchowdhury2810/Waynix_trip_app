@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
     },
     listContainer: {
-        marginTop: 20,
+        marginTop: 10,
         marginBottom: 20,
     },
     horizontalListContent: {
